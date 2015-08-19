@@ -1,10 +1,12 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * ParkAssist-React-Native
+ * https://github.com/BeamingBaldwin/splendid-simi
  */
 'use strict';
 
 var React = require('react-native');
+var RecommendationService = require('./RecommendationService');
+
 var {
   AppRegistry,
   StyleSheet,
@@ -13,7 +15,19 @@ var {
   TouchableHighlight,
 } = React;
 
+var MOCK_USER = {
+  latitude: 34.0192475,
+  longitude: -118.4942426,
+  range: 0.2,
+};
+
 var ParkingAssist = React.createClass({
+  getInitialState: () => { return { meters: [] } },
+  componentDidMount: function() {
+    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
+      this.setState({ meters });
+    });
+  },
 
   render: function() {
     return (
@@ -31,12 +45,12 @@ var ParkingAssist = React.createClass({
         <View style={styles.buttons}>
           <TouchableHighlight
             style={styles.button}
-            onPress={this._handleNextMeterBtnClick.bind(this)}>
+            onPress={this._handleNextMeterBtnClick}>
               <Text style={styles.buttonText}>NEXT METER</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.button}
-            onPress={this._handleSetLocationBtnClick.bind(this)}>
+            onPress={this._handleSetLocationBtnClick}>
               <Text style={styles.buttonText}>SET LOCATION</Text>
           </TouchableHighlight>
         </View>
@@ -45,11 +59,11 @@ var ParkingAssist = React.createClass({
   },
 
   _handleNextMeterBtnClick: function() {
-    console.log('_handleNextMeterBtnClick');
+    console.log('_handleNextMeterBtnClick', this.state);
   },
 
   _handleSetLocationBtnClick: function() {
-    console.log('_handleSetLocationBtnClick');
+    console.log('_handleSetLocationBtnClick', this.state);
   },
 });
 
