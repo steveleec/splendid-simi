@@ -1,10 +1,12 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * ParkAssist-React-Native
+ * https://github.com/BeamingBaldwin/splendid-simi
  */
 'use strict';
 
 var React = require('react-native');
+var RecommendationService = require('./RecommendationService');
+
 var {
   AppRegistry,
   StyleSheet,
@@ -13,7 +15,19 @@ var {
   TouchableHighlight,
 } = React;
 
+var MOCK_USER = {
+  latitude: 34.0192475,
+  longitude: -118.4942426,
+  range: 0.2,
+};
+
 var ParkingAssist = React.createClass({
+  componentDidMount: function() {
+    console.log('requesting data');
+    RecommendationService.getRecommendations(MOCK_USER, (data) => {
+      console.log(data);
+    });
+  },
 
   render: function() {
     return (
