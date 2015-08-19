@@ -16,15 +16,16 @@ var ParkingAssist = React.createClass({
   render: function() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
+        <Text style={styles.title}>
+          Parking Assist
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
+        <View style={styles.map}>
+          <Text style={styles.text}>
+            Map Component Goes Here
+          </Text>
+        </View>
+        <Text style={styles.text}>
+          Footer
         </Text>
       </View>
     );
@@ -38,12 +39,15 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
+  title: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
+  map: {
+    flex: 1,
+  },
+  text: {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
