@@ -15,7 +15,7 @@ type UserType = {
   range: Number,
 };
 
-var getRecommendations = (user: UserType, callback) => {
+var getRecommendations = (user, callback) => {
   var userRef = _ref.child('Users').push(user);
 
   userRef

@@ -13,6 +13,7 @@ var {
   StyleSheet,
   Text,
   View,
+  StatusBarIOS,
   TouchableHighlight,
 } = React;
 
@@ -77,6 +78,7 @@ var ParkingAssist = React.createClass({
   },
 
   componentDidMount: function() {
+    StatusBarIOS.setStyle(1);
     RecommendationService.getRecommendations(MOCK_USER, (meters) => {
       this.setState({ meters });
     });
