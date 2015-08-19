@@ -22,10 +22,10 @@ var MOCK_USER = {
 };
 
 var ParkingAssist = React.createClass({
+  getInitialState: () => { return { meters: [] } },
   componentDidMount: function() {
-    console.log('requesting data');
-    RecommendationService.getRecommendations(MOCK_USER, (data) => {
-      console.log(data);
+    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
+      this.setState({ meters });
     });
   },
 
@@ -45,12 +45,12 @@ var ParkingAssist = React.createClass({
         <View style={styles.buttons}>
           <TouchableHighlight
             style={styles.button}
-            onPress={this._handleNextMeterBtnClick.bind(this)}>
+            onPress={this._handleNextMeterBtnClick}>
               <Text style={styles.buttonText}>NEXT METER</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.button}
-            onPress={this._handleSetLocationBtnClick.bind(this)}>
+            onPress={this._handleSetLocationBtnClick}>
               <Text style={styles.buttonText}>SET LOCATION</Text>
           </TouchableHighlight>
         </View>
@@ -59,11 +59,11 @@ var ParkingAssist = React.createClass({
   },
 
   _handleNextMeterBtnClick: function() {
-    console.log('_handleNextMeterBtnClick');
+    console.log('_handleNextMeterBtnClick', this.state);
   },
 
   _handleSetLocationBtnClick: function() {
-    console.log('_handleSetLocationBtnClick');
+    console.log('_handleSetLocationBtnClick', this.state);
   },
 });
 
