@@ -10,43 +10,97 @@ var {
   StyleSheet,
   Text,
   View,
+  TouchableHighlight,
 } = React;
 
 var ParkingAssist = React.createClass({
+
   render: function() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>
+            PARKING ASSIST
+          </Text>
+        </View>
+        <View style={styles.map}>
+          <Text style={styles.text}>
+            Map Component Goes Here
+          </Text>
+        </View>
+        <View style={styles.buttons}>
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this._handleNextMeterBtnClick.bind(this)}>
+              <Text style={styles.buttonText}>NEXT METER</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this._handleSetLocationBtnClick.bind(this)}>
+              <Text style={styles.buttonText}>SET LOCATION</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
-  }
+  },
+
+  _handleNextMeterBtnClick: function() {
+    console.log('_handleNextMeterBtnClick');
+  },
+
+  _handleSetLocationBtnClick: function() {
+    console.log('_handleSetLocationBtnClick');
+  },
 });
+
+var colors = {
+  black: '#000',
+  white: '#fff',
+  midnight: '#24313F',
+  midnightBlue: '#2c3e50',
+  wetAsphault: '#34495e',
+  concrete: '#95a5a6',
+  abestos: '#7f8c8d',
+  clouds: '#ecf0f1',
+  silver: '#bdc3c7',
+};
 
 var styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
+    backgroundColor: colors.wetAsphault,
+  },
+  header: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    height: 44,
+    backgroundColor: colors.midnight,
   },
-  welcome: {
+  title: {
+    textAlign: 'center',
     fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+    fontFamily: 'Montserrat-Bold',
+    color: colors.clouds,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  map: {
+    flex: 1,
+  },
+  buttons: {
+    flexDirection: 'row',
+    padding: 16,
+  },
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 8,
+    padding: 16,
+    borderRadius: 4,
+    backgroundColor: colors.midnight,
+  },
+  buttonText: {
+    fontFamily: 'Montserrat-Bold',
+    color: colors.clouds,
   },
 });
 
