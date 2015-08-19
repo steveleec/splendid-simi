@@ -21,52 +21,6 @@ var MOCK_USER = {
   range: 0.2,
 };
 
-var ParkingAssist = React.createClass({
-  getInitialState: () => { return { meters: [] } },
-  componentDidMount: function() {
-    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
-      this.setState({ meters });
-    });
-  },
-
-  render: function() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>
-            PARKING ASSIST
-          </Text>
-        </View>
-        <View style={styles.map}>
-          <Text style={styles.text}>
-            Map Component Goes Here
-          </Text>
-        </View>
-        <View style={styles.buttons}>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this._handleNextMeterBtnClick}>
-              <Text style={styles.buttonText}>NEXT METER</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this._handleSetLocationBtnClick}>
-              <Text style={styles.buttonText}>SET LOCATION</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  },
-
-  _handleNextMeterBtnClick: function() {
-    console.log('_handleNextMeterBtnClick', this.state);
-  },
-
-  _handleSetLocationBtnClick: function() {
-    console.log('_handleSetLocationBtnClick', this.state);
-  },
-});
-
 var colors = {
   black: '#000',
   white: '#fff',
@@ -115,6 +69,56 @@ var styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'Montserrat-Bold',
     color: colors.clouds,
+  },
+});
+
+var ParkingAssist = React.createClass({
+
+  getInitialState: () => {
+    return { meters: [] };
+  },
+
+  componentDidMount: function() {
+    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
+      this.setState({ meters });
+    });
+  },
+
+  render: function() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>
+            PARKING ASSIST
+          </Text>
+        </View>
+        <View style={styles.map}>
+          <Text style={styles.text}>
+            Map Component Goes Here
+          </Text>
+        </View>
+        <View style={styles.buttons}>
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this._handleNextMeterBtnClick}>
+              <Text style={styles.buttonText}>NEXT METER</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this._handleSetLocationBtnClick}>
+              <Text style={styles.buttonText}>SET LOCATION</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+    );
+  },
+
+  _handleNextMeterBtnClick: function() {
+    console.log('_handleNextMeterBtnClick', this.state);
+  },
+
+  _handleSetLocationBtnClick: function() {
+    console.log('_handleSetLocationBtnClick', this.state);
   },
 });
 
