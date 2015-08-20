@@ -7,18 +7,17 @@
   },
   "dependencies": {
     "firebase": "^2.2.9",
-    "react-native": "^0.9.0"
+    "react-native": "^0.9.0",
+    "react-native-mapbox-gl": "^0.4.0",
+    "react-native-geocoder": "^0.1.4"
   },
   "devDependencies": {
     "babel-eslint": "^4.0.10",
     "eslint": "^1.2.0",
     "eslint-config-airbnb": "0.0.7",
     "eslint-plugin-react": "^3.2.3",
-    "react-native": "^0.9.0",
     "babel": "5.8.21",
     "babel-core": "5.8.21",
-    "react-native-mapbox-gl": "^0.4.0",
-    "react-native-geocoder": "^0.1.4",
     "jest-cli": "0.5.0",
     "babel-eslint": "3.1.5",
     "eslint": "0.21.2",

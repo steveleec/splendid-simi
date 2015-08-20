@@ -76,12 +76,15 @@ var ParkingAssist = React.createClass({
   getInitialState: () => {
     return { meters: [] };
   },
-
+  setUser: function() {
+    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
+      this.setState({ meters, index:0});
+      this.getMeters(meters, 0);
+    });
+  },
   componentDidMount: function() {
     StatusBarIOS.setStyle(1);
-    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
-      this.setState({ meters });
-    });
+    this.setUser();
   },
   render: function() {
     return (
@@ -92,7 +95,7 @@ var ParkingAssist = React.createClass({
           </Text>
         </View>
         <View style={styles.map}>
-          <MapDisplaySection />
+          <MapDisplaySection registerNext={this.registerNext} />
         </View>
         <View style={styles.buttons}>
           <TouchableHighlight
@@ -110,13 +113,31 @@ var ParkingAssist = React.createClass({
     );
   },
 
+  getMeters: function(meters, index) {
+    var from = index * 10,
+        to = (index + 1) * 10,
+        nextMeters = meters.slice(from, to);
+    this.state.next && this.state.next(nextMeters);
+    if(!nextMeters.length) {
+      // this.setState({index:0});
+      this.setUser();
+    }
+  },
+
   _handleNextMeterBtnClick: function() {
     console.log('_handleNextMeterBtnClick');
+    var index = this.state.index + 1;
+    this.setState({index});
+    this.getMeters(this.state.meters, index);
   },
 
   _handleSetLocationBtnClick: function() {
     console.log('_handleSetLocationBtnClick');
   },
+
+  registerNext: function(next) {
+    this.setState({next});
+  }
 });
 
 AppRegistry.registerComponent('ParkingAssist', () => ParkingAssist);

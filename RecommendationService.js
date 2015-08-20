@@ -31,11 +31,19 @@ var getRecommendations = (user, callback) => {
         Object.keys(recommendations).length
       );
       userRef.remove();
-      callback(recommendations);
+      callback(sortDistance(recommendations));
     })
     userRef.off('child_added');
   })
 };
+
+var sortDistance = (objs) => {
+  var arr = [];
+  for (var obj in objs) {
+    arr.push(objs[obj]);
+  }
+  return arr.sort((a,b) => a.distance-b.distance)
+}
 
 
 var RecommendationService = {

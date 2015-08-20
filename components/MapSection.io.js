@@ -60,7 +60,13 @@ var MapDisplaySection = React.createClass({
   componentDidMount: function() {
     // Fetch the data from the API here!
     // change to loaded true once the data is gotten.
-    this.fetchData();
+    // this.fetchData();
+
+    this.props.registerNext(this.next);
+  },
+  next: function(meters){
+    this.setState({meters});
+    console.log('got next meter', meters);
   },
   fetchData: function(){
     /*
