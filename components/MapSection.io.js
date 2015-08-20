@@ -1,7 +1,6 @@
 var React = require('react-native');
-var RNGeocoder = require('react-native-geocoder');
 var MapboxGLMap = require('react-native-mapbox-gl');
-var RecommendationService = require('../RecommendationService');
+var RecommendationService = require('./RecommendationService');
 var mapRef = 'mapRef';
 
 var {
