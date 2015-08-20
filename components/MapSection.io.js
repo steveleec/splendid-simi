@@ -20,7 +20,7 @@ var {
 // };
 
 // var USER_ICON = 'http://icon-park.com/imagefiles/location_map_pin_red8.png';
-var METER_ICON = 'http://i.imgur.com/qlqr8GX.png';
+var METER_ICON = 'http://i.imgur.com/TTilbOY.png';
 
 var MapDisplaySection = React.createClass({
   mixins: [MapboxGLMap.Mixin],
@@ -37,7 +37,7 @@ var MapDisplaySection = React.createClass({
   },
   onRegionChange(location) {
     console.log('onRegionChange',location);
-    this.setState({ currentZoom: location.zoom });
+    this.setState({ currentLocation: location });
   },
   onRegionWillChange(location) {
     console.log('onRegionWillChange', location);
@@ -68,14 +68,16 @@ var MapDisplaySection = React.createClass({
     );
   },
   getMapUserLocation: function(){
-    console.log('do something with current map center');
+    this.setUserLocation(this.state.currentLocation);
   },
   setUserLocation: function(userLocation) {
+    console.log('setUserLocation', userLocation);
     var { latitude, longitude, zoom } = userLocation;
-    this.setState({userLocation});
-    this.getRecommendations(() => {
-      this.showMeters(this.getNextMeters());
-    });
+    this.setState({userLocation}, () =>
+      this.getRecommendations(() => {
+        this.showMeters(this.getNextMeters());
+      })
+    );
     this.setCenterCoordinateZoomLevelAnimated(mapRef, latitude, longitude, zoom);
     // var userAnnotation = {
     //   latitude, longitude, title: 'you are here',
@@ -91,6 +93,7 @@ var MapDisplaySection = React.createClass({
   getRecommendations: function(next) {
     RecommendationService.getRecommendations(this.state.userLocation, (meters) => {
       console.log('getRecommendations', meters);
+      this.showMeters(meters);
       this.setState({ meters, index:0}, next);
     });
   },
@@ -157,7 +160,8 @@ var MapDisplaySection = React.createClass({
           styleURL={'asset://styles/mapbox-streets-v7.json'}
           centerCoordinate={this.state.center}
           userLocationVisible={true}
-          zoomLevel={this.state.zoom}/>
+          zoomLevel={this.state.zoom}
+          onRegionChange={this.onRegionChange}/>
       </View>
     );
   },

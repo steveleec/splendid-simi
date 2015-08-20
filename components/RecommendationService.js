@@ -9,6 +9,7 @@ var _url = require('../firebaselink').url;
 var _ref = new _fb(_url);
 
 var getRecommendations = (user, callback) => {
+  if(!user.range) user.range = 0.2;
   console.log('getRecommendations', user);
   var userRef = _ref.child('Users').push(user);
 
