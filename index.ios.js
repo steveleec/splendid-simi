@@ -92,9 +92,6 @@ var ParkingAssist = React.createClass({
           </Text>
         </View>
         <View style={styles.map}>
-          <Text style={styles.text}>
-            Map Component Goes Here
-          </Text>
           <MapDisplaySection />
         </View>
         <View style={styles.buttons}>

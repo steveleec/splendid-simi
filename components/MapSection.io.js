@@ -89,7 +89,6 @@ var MapDisplaySection = React.createClass({
     // };
     return (
       <View style={styles.container}>
-        <Text> Maps Here</Text>
         <MapboxGLMap
           style={styles.map}
           direction={0}
@@ -104,7 +103,6 @@ var MapDisplaySection = React.createClass({
           centerCoordinate={this.state.center}
           userLocationVisible={true}
           zoomLevel={this.state.zoom}/>
-        <Text> End of maps</Text>
       </View>
     );
   },
