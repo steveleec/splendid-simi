@@ -83,13 +83,8 @@ var ParkingAssist = React.createClass({
         <View style={styles.buttons}>
           <TouchableHighlight
             style={styles.button}
-            onPress={this._handleNextMeterBtnClick}>
-              <Text style={styles.buttonText}>NEXT METER</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.button}
             onPress={this._handleSetLocationBtnClick}>
-              <Text style={styles.buttonText}>SET LOCATION</Text>
+              <Text style={styles.buttonText}>Redo Search In This Area</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -97,10 +92,6 @@ var ParkingAssist = React.createClass({
   },
   setMessageReceiver: function(messageReceiver){
     this.setState({messageReceiver});
-  },
-  _handleNextMeterBtnClick: function() {
-    console.log('_handleNextMeterBtnClick');
-    this.state.messageReceiver('showNextMeters');
   },
   _handleSetLocationBtnClick: function() {
     console.log('_handleSetLocationBtnClick');
