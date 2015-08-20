@@ -13,6 +13,7 @@ var {
   StyleSheet,
   Text,
   View,
+  StatusBarIOS,
   TouchableHighlight,
 } = React;
 
@@ -77,6 +78,7 @@ var ParkingAssist = React.createClass({
   },
 
   componentDidMount: function() {
+    StatusBarIOS.setStyle(1);
     RecommendationService.getRecommendations(MOCK_USER, (meters) => {
       this.setState({ meters });
     });
@@ -90,9 +92,6 @@ var ParkingAssist = React.createClass({
           </Text>
         </View>
         <View style={styles.map}>
-          <Text style={styles.text}>
-            Map Component Goes Here
-          </Text>
           <MapDisplaySection />
         </View>
         <View style={styles.buttons}>

@@ -48,5 +48,8 @@
 		<string>Montserrat-Regular.ttf</string>
 		<string>Montserrat-Bold.ttf</string>
 	</array>
+	<key>LSApplicationCategoryType</key>
+	<string>StatusBarIOS.setStyle(tabName === &apos;faceMash&apos; ? 1 : 0);
+</string>
 </dict>
 </plist>
