@@ -5,8 +5,9 @@
 'use strict';
 
 var React = require('react-native');
-var RecommendationService = require('./RecommendationService');
 var MapDisplaySection = require('./components/MapSection.io.js');
+
+var mapRef = 'mapRef';
 
 var {
   AppRegistry,
@@ -17,11 +18,7 @@ var {
   TouchableHighlight,
 } = React;
 
-var MOCK_USER = {
-  latitude: 34.0192475,
-  longitude: -118.4942426,
-  range: 0.2,
-};
+
 var colors = {
   black: '#000',
   white: '#fff',
@@ -73,18 +70,8 @@ var styles = StyleSheet.create({
   },
 });
 var ParkingAssist = React.createClass({
-  getInitialState: () => {
-    return { meters: [] };
-  },
-  setUser: function() {
-    RecommendationService.getRecommendations(MOCK_USER, (meters) => {
-      this.setState({ meters, index:0});
-      this.getMeters(meters, 0);
-    });
-  },
   componentDidMount: function() {
     StatusBarIOS.setStyle(1);
-    this.setUser();
   },
   render: function() {
     return (
@@ -95,7 +82,7 @@ var ParkingAssist = React.createClass({
           </Text>
         </View>
         <View style={styles.map}>
-          <MapDisplaySection registerNext={this.registerNext} />
+          <MapDisplaySection setMessageReceiver={this.setMessageReceiver} ref={mapRef} />
         </View>
         <View style={styles.buttons}>
           <TouchableHighlight
@@ -112,32 +99,17 @@ var ParkingAssist = React.createClass({
       </View>
     );
   },
-
-  getMeters: function(meters, index) {
-    var from = index * 10,
-        to = (index + 1) * 10,
-        nextMeters = meters.slice(from, to);
-    this.state.next && this.state.next(nextMeters);
-    if(!nextMeters.length) {
-      // this.setState({index:0});
-      this.setUser();
-    }
+  setMessageReceiver: function(messageReceiver){
+    this.setState({messageReceiver});
   },
-
   _handleNextMeterBtnClick: function() {
     console.log('_handleNextMeterBtnClick');
-    var index = this.state.index + 1;
-    this.setState({index});
-    this.getMeters(this.state.meters, index);
+    this.state.messageReceiver('showNextMeters');
   },
-
   _handleSetLocationBtnClick: function() {
     console.log('_handleSetLocationBtnClick');
+    this.state.messageReceiver('setUserLocation');
   },
-
-  registerNext: function(next) {
-    this.setState({next});
-  }
 });
 
 AppRegistry.registerComponent('ParkingAssist', () => ParkingAssist);

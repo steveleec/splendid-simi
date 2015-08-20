@@ -8,13 +8,6 @@ var _fb = require('firebase');
 var _url = require('./firebaselink').url;
 var _ref = new _fb(_url);
 
-/* @flow */
-type UserType = {
-  latitude: Number,
-  longitude: Number,
-  range: Number,
-};
-
 var getRecommendations = (user, callback) => {
   var userRef = _ref.child('Users').push(user);
 
