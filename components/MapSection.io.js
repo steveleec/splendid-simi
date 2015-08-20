@@ -12,14 +12,6 @@ var {
   View,
 } = React;
 
-// var MOCK_USER = {
-//   latitude: 34.0218629,
-//   longitude: -118.4804206,
-//   zoom: 13,
-//   range: 0.2,
-// };
-
-// var USER_ICON = 'http://icon-park.com/imagefiles/location_map_pin_red8.png';
 var METER_ICON = 'http://i.imgur.com/TTilbOY.png';
 
 var MapDisplaySection = React.createClass({
@@ -36,17 +28,19 @@ var MapDisplaySection = React.createClass({
     };
   },
   onRegionChange(location) {
-    console.log('onRegionChange',location);
-    this.setState({ currentLocation: location });
+    if(this.state.initComplete){
+      console.log('onRegionChange',location);
+      this.setState({ currentLocation: location });
+    }
   },
   onRegionWillChange(location) {
     console.log('onRegionWillChange', location);
   },
   onUpdateUserLocation(location) {
-    console.log(location);
+    console.log('onUpdateUserLocation', location);
   },
   onOpenAnnotation(annotation) {
-    console.log(annotation);
+    console.log('onOpenAnnotation', annotation);
   },
   onRightAnnotationTapped(e) {
     console.log(e);
@@ -62,12 +56,14 @@ var MapDisplaySection = React.createClass({
         var user = {latitude,longitude,zoom: 17,range: 0.2};
         console.log('setUser', user);
         callback( user );
+        this.setState({ initComplete: true });
       },
       (error) => console.error(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000}
     );
   },
   getMapUserLocation: function(){
+    console.log('getMapUserLocation', this.state.currentLocation);
     this.setUserLocation(this.state.currentLocation);
   },
   setUserLocation: function(userLocation) {
@@ -79,16 +75,6 @@ var MapDisplaySection = React.createClass({
       })
     );
     this.setCenterCoordinateZoomLevelAnimated(mapRef, latitude, longitude, zoom);
-    // var userAnnotation = {
-    //   latitude, longitude, title: 'you are here',
-    //   annotationImage: {
-    //     url: USER_ICON,
-    //     height: 25,
-    //     width: 25
-    //   }
-    // };
-    // this.addAnnotations(mapRef, [userAnnotation]);
-    // this.setState({userAnnotation});
   },
   getRecommendations: function(next) {
     RecommendationService.getRecommendations(this.state.userLocation, (meters) => {
