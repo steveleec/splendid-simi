@@ -9,6 +9,7 @@ var _url = require('../firebaselink').url;
 var _ref = new _fb(_url);
 
 var getRecommendations = (user, callback) => {
+  console.log('getRecommendations', user);
   var userRef = _ref.child('Users').push(user);
 
   userRef
@@ -17,6 +18,7 @@ var getRecommendations = (user, callback) => {
     userRef
     .child('Recommendations')
     .orderByChild('distance')
+    .limitToFirst(5)
     .once('value', (snapshot) => {
       var recommendations = snapshot.val();
       console.log(
@@ -37,7 +39,6 @@ var sortDistance = (objs) => {
   }
   return arr.sort((a,b) => a.distance-b.distance)
 }
-
 
 var RecommendationService = {
   getRecommendations,

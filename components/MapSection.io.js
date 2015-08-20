@@ -12,44 +12,27 @@ var {
   View,
 } = React;
 
-var MOCK_USER = {
-  latitude: 34.019236,
-  longitude: -118.494370,
-  zoom: 15,
-  range: 0.2,
-};
-var USER_ICON = 'http://icon-park.com/imagefiles/location_map_pin_red8.png';
-var METER_ICON = 'http://images.clipartpanda.com/google-location-icon-Location_marker_pin_map_gps.png';
+// var MOCK_USER = {
+//   latitude: 34.0218629,
+//   longitude: -118.4804206,
+//   zoom: 13,
+//   range: 0.2,
+// };
+
+// var USER_ICON = 'http://icon-park.com/imagefiles/location_map_pin_red8.png';
+var METER_ICON = 'http://i.imgur.com/qlqr8GX.png';
 
 var MapDisplaySection = React.createClass({
   mixins: [MapboxGLMap.Mixin],
   getInitialState() {
     return {
       meters: [],
-      user: MOCK_USER,
       loaded: false,
-      center: {
-        latitude: 34.019236,
-        longitude: -118.494370,
+      center: { // Santa Monica
+        latitude: 34.0218629,
+        longitude: -118.4804206,
       },
-      zoom: 15,
-      annotations: [{
-        latitude: 34.019236,
-        longitude:  -118.494370,
-        title: 'MakerSquare LA',
-        subtitle: 'School',
-        rightCalloutAccessory: {
-            url: 'https://cldup.com/9Lp0EaBw5s.png',
-            height: 25,
-            width: 25
-        },
-        annotationImage: {
-          url: 'https://pbs.twimg.com/profile_images/542918126111703041/wP1SX3kg_400x400.png',
-          height: 25,
-          width: 25
-        },
-        id: 'marker0'
-      }]
+      zoom: 13,
     };
   },
   onRegionChange(location) {
@@ -94,20 +77,19 @@ var MapDisplaySection = React.createClass({
       this.showMeters(this.getNextMeters());
     });
     this.setCenterCoordinateZoomLevelAnimated(mapRef, latitude, longitude, zoom);
-    var userAnnotation = {
-      latitude, longitude, title: 'you are here',
-      annotationImage: {
-        url: USER_ICON,
-        height: 25,
-        width: 25
-      }
-    };
-    this.addAnnotations(mapRef, [userAnnotation]);
-    this.setState({userAnnotation});
-
+    // var userAnnotation = {
+    //   latitude, longitude, title: 'you are here',
+    //   annotationImage: {
+    //     url: USER_ICON,
+    //     height: 25,
+    //     width: 25
+    //   }
+    // };
+    // this.addAnnotations(mapRef, [userAnnotation]);
+    // this.setState({userAnnotation});
   },
   getRecommendations: function(next) {
-    RecommendationService.getRecommendations(this.state.user, (meters) => {
+    RecommendationService.getRecommendations(this.state.userLocation, (meters) => {
       console.log('getRecommendations', meters);
       this.setState({ meters, index:0}, next);
     });
@@ -131,11 +113,11 @@ var MapDisplaySection = React.createClass({
     meters.forEach((meter) => {
       meter.annotationImage = {
         url: METER_ICON,
-        height: 25,
+        height: 14,
         width: 25
       };
     });
-    this.addAnnotations(mapRef, meters.concat(this.state.userAnnotation));
+    this.addAnnotations(mapRef, meters);
   },
   handleMessage: function(message) {
     switch(message){
