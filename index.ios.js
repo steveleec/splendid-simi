@@ -1,7 +1,3 @@
-/**
- * ParkAssist-React-Native
- * https://github.com/BeamingBaldwin/splendid-simi
- */
 'use strict';
 
 var React = require('react-native');

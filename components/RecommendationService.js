@@ -5,7 +5,7 @@
 'use strict';
 
 var _fb = require('firebase');
-var _url = require('./firebaselink').url;
+var _url = require('../firebaselink').url;
 var _ref = new _fb(_url);
 
 var getRecommendations = (user, callback) => {
