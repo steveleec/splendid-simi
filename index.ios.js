@@ -6,6 +6,7 @@
 
 var React = require('react-native');
 var RecommendationService = require('./RecommendationService');
+var MapDisplaySection = require('./components/MapSection.io.js');
 
 var {
   AppRegistry,
@@ -20,7 +21,6 @@ var MOCK_USER = {
   longitude: -118.4942426,
   range: 0.2,
 };
-
 var colors = {
   black: '#000',
   white: '#fff',
@@ -71,9 +71,7 @@ var styles = StyleSheet.create({
     color: colors.clouds,
   },
 });
-
 var ParkingAssist = React.createClass({
-
   getInitialState: () => {
     return { meters: [] };
   },
@@ -83,7 +81,6 @@ var ParkingAssist = React.createClass({
       this.setState({ meters });
     });
   },
-
   render: function() {
     return (
       <View style={styles.container}>
@@ -96,6 +93,7 @@ var ParkingAssist = React.createClass({
           <Text style={styles.text}>
             Map Component Goes Here
           </Text>
+          <MapDisplaySection />
         </View>
         <View style={styles.buttons}>
           <TouchableHighlight
@@ -114,11 +112,11 @@ var ParkingAssist = React.createClass({
   },
 
   _handleNextMeterBtnClick: function() {
-    console.log('_handleNextMeterBtnClick', this.state);
+    console.log('_handleNextMeterBtnClick');
   },
 
   _handleSetLocationBtnClick: function() {
-    console.log('_handleSetLocationBtnClick', this.state);
+    console.log('_handleSetLocationBtnClick');
   },
 });
 
