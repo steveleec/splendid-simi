@@ -13,7 +13,7 @@ var {
   View,
 } = React;
 
-var METER_ICON = 'http://i.imgur.com/TTilbOY.png';
+var METER_ICON = 'http://i.imgur.com/MpFpHXa.png';
 
 var _distance = function(latU, longU, latP, longP) {
   return Math.sqrt(Math.pow((latP - latU) * 69.1128, 2) + Math.pow((longP - longU) * 57.2807, 2));
@@ -79,11 +79,11 @@ var MapDisplaySection = React.createClass({
   getMapUserLocation: function(){
     var q = Q.defer();
     console.log('getMapUserLocation', this.state.isMoving, this.state.viewLocation);
-    if(this.state.isMoving) q.reject('error: moving');
-    else {
+    // if(this.state.isMoving) q.reject('error: moving');
+    // else {
       console.log('view', this.state.viewLocation);
       q.resolve(this.state.viewLocation);
-    }
+    // }
     return q.promise;
   },
   setViewLocation: function(location) {
@@ -120,7 +120,7 @@ var MapDisplaySection = React.createClass({
     meters.forEach((meter) => {
       meter.annotationImage = {
         url: METER_ICON,
-        height: 14,
+        height: 25,
         width: 25
       };
     });
