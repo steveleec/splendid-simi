@@ -57,11 +57,13 @@ var MapDisplaySection = React.createClass({
     console.log(e);
   },
   componentDidMount: function() {
+    this.props.handleLoading(true);
     this.props.setMessageReceiver(this.handleMessage);
     this.getGPSUserLocation()
     .then(this.setViewLocation)
     .then(this.getRecommendations)
-    .then(this.showMeters);
+    .then(this.showMeters)
+    .then(function() { this.props.handleLoading(false); }.bind(this));
   },
   getGPSUserLocation: function(callback, q) {
     q = q || Q.defer();
@@ -145,6 +147,7 @@ var MapDisplaySection = React.createClass({
         this.getGPSUserLocation()
         .then(this.setViewLocation)
         .then(this.onRegionChange)
+        .then(function() { this.props.handleLoading(false); }.bind(this));
         break;
     }
   },
