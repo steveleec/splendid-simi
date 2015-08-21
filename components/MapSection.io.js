@@ -14,6 +14,11 @@ var {
 
 var METER_ICON = 'http://i.imgur.com/TTilbOY.png';
 
+var _distance = function(latU, longU, latP, longP) {
+  return Math.sqrt(Math.pow((latP - latU) * 69.1128, 2) + Math.pow((longP - longU) * 57.2807, 2));
+}
+
+
 var MapDisplaySection = React.createClass({
   mixins: [MapboxGLMap.Mixin],
   getInitialState() {
@@ -28,12 +33,15 @@ var MapDisplaySection = React.createClass({
     };
   },
   onRegionChange(location) {
-    if(this.state.initComplete){
-      console.log('onRegionChange',location);
-      this.setState({ currentLocation: location });
+    if(this.state.isMoving){
+      this.setState({ 
+        currentLocation: location,
+        isMoving: false,
+      });
     }
   },
   onRegionWillChange(location) {
+    this.setState({isMoving: true});
     console.log('onRegionWillChange', location);
   },
   onUpdateUserLocation(location) {
@@ -54,49 +62,28 @@ var MapDisplaySection = React.createClass({
       (initialPosition) => {
         var {latitude, longitude} = initialPosition.coords;
         var user = {latitude,longitude,zoom: 17,range: 0.2};
-        console.log('setUser', user);
         callback( user );
-        this.setState({ initComplete: true });
       },
       (error) => console.error(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000}
     );
   },
   getMapUserLocation: function(){
-    console.log('getMapUserLocation', this.state.currentLocation);
-    this.setUserLocation(this.state.currentLocation);
+    if(!this.state.isMoving){
+      this.state.currentLocation && this.setUserLocation(this.state.currentLocation);
+    }
   },
   setUserLocation: function(userLocation) {
     console.log('setUserLocation', userLocation);
     var { latitude, longitude, zoom } = userLocation;
-    this.setState({userLocation}, () =>
-      this.getRecommendations(() => {
-        this.showMeters(this.getNextMeters());
-      })
-    );
+    this.setState({userLocation, currentLocation: userLocation}, this.getRecommendations);
     this.setCenterCoordinateZoomLevelAnimated(mapRef, latitude, longitude, zoom);
   },
   getRecommendations: function(next) {
     RecommendationService.getRecommendations(this.state.userLocation, (meters) => {
       console.log('getRecommendations', meters);
       this.showMeters(meters);
-      this.setState({ meters, index:0}, next);
     });
-  },
-  getNextMeters: function() {
-    var meters = this.state.meters || [],
-        index = this.state.index || 0;
-    var SHOW_N_METERS = 10;
-    var from = index * SHOW_N_METERS,
-        to = (index + 1) * SHOW_N_METERS,
-        nextMeters = meters.slice(from, to);
-    if (!nextMeters.length) {
-      console.log('resetting');
-      index = 0;
-      nextMeters = meters.slice(0,10);
-    }
-    this.setState({index: index + 1});
-    return nextMeters;
   },
   showMeters: function(meters){
     meters.forEach((meter) => {
@@ -112,7 +99,6 @@ var MapDisplaySection = React.createClass({
     switch(message){
       case 'showNextMeters':
         console.log('got next message');
-        this.showMeters(this.getNextMeters());
         break;
       case 'setUserLocation':
         this.getMapUserLocation();
@@ -136,7 +122,7 @@ var MapDisplaySection = React.createClass({
         <MapboxGLMap
           style={styles.map}
           direction={0}
-          rotateEnabled={true}
+          rotateEnabled={false}
           scrollEnabled={true}
           zoomEnabled={true}
           showsUserLocation={true}
@@ -147,7 +133,8 @@ var MapDisplaySection = React.createClass({
           centerCoordinate={this.state.center}
           userLocationVisible={true}
           zoomLevel={this.state.zoom}
-          onRegionChange={this.onRegionChange}/>
+          onRegionChange={this.onRegionChange}
+          onRegionWillChange={this.onRegionWillChange}/>
       </View>
     );
   },
