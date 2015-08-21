@@ -122,6 +122,7 @@ var ParkingAssist = React.createClass({
     this.state.messageReceiver('doSearch');
   },
   _handleResetLocationBtnClick: function() {
+    this.setState({isLoading: true});
     console.log('_handleResetLocationBtnClick');
     this.state.messageReceiver('resetUserLocation');
   },
