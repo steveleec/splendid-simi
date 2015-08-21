@@ -97,7 +97,7 @@ var ParkingAssist = React.createClass({
             style={styles.setLocationBtn}
             onPress={this._handleSetLocationBtnClick}
           >
-              <Text style={styles.setLocationBtnText}>Redo Search In This Area</Text>
+              <Text style={styles.setLocationBtnText}>REDO SEARCH IN THIS AREA</Text>
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.resetLocationBtn}
