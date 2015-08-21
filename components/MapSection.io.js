@@ -103,6 +103,9 @@ var MapDisplaySection = React.createClass({
       case 'setUserLocation':
         this.getMapUserLocation();
         break;
+      case 'resetUserLocation':
+        this.getGPSUserLocation(this.setUserLocation);
+        break;
     }
   },
   renderLoadingView: function() {
