@@ -57,7 +57,7 @@ var styles = StyleSheet.create({
     flex: 1, alignItems: 'center', justifyContent: 'center', height: 44, margin: 8, borderRadius: 4, backgroundColor: colors.midnight,
   },
   setLocationBtnText: {
-    fontFamily: 'Montserrat-Bold', color: colors.clouds,
+    fontFamily: 'Montserrat-Bold', color: colors.clouds, fontSize: 12,
   },
   resetLocationBtn: {
     flex: 0, alignItems: 'center', justifyContent: 'center', width: 44, height: 44, margin: 8, borderRadius: 4, backgroundColor: colors.midnight,
