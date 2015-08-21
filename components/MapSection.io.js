@@ -1,6 +1,7 @@
 var React = require('react-native');
 var MapboxGLMap = require('react-native-mapbox-gl');
 var RecommendationService = require('./RecommendationService');
+var Q = require('q');
 var mapRef = 'mapRef';
 
 var {
@@ -33,15 +34,17 @@ var MapDisplaySection = React.createClass({
     };
   },
   onRegionChange(location) {
+    console.log('onRegionChange', this.state.isMoving);
     if(this.state.isMoving){
-      this.setState({ 
-        currentLocation: location,
-        isMoving: false,
+      this._setState({ 
+        viewLocation: location,
+        // isMoving: false,
       });
     }
+    this.setState({isMoving: false});
   },
   onRegionWillChange(location) {
-    this.setState({isMoving: true});
+    this._setState({isMoving: true});
     console.log('onRegionWillChange', location);
   },
   onUpdateUserLocation(location) {
@@ -55,38 +58,65 @@ var MapDisplaySection = React.createClass({
   },
   componentDidMount: function() {
     this.props.setMessageReceiver(this.handleMessage);
-    this.getGPSUserLocation(this.setUserLocation);
+    this.getGPSUserLocation()
+    .then(this.setViewLocation)
+    .then(this.getRecommendations)
+    .then(this.showMeters);
   },
   getGPSUserLocation: function(callback) {
+    var q = Q.defer();
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
         var {latitude, longitude} = initialPosition.coords;
         var user = {latitude,longitude,zoom: 17,range: 0.2};
-        callback( user );
+        q.resolve(user);
       },
       (error) => console.error(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000}
     );
+    return q.promise;
   },
   getMapUserLocation: function(){
-    if(!this.state.isMoving){
-      this.state.currentLocation && this.setUserLocation(this.state.currentLocation);
+    var q = Q.defer();
+    console.log('getMapUserLocation', this.state.isMoving, this.state.viewLocation);
+    if(this.state.isMoving) q.reject('error: moving');
+    else {
+      console.log('view', this.state.viewLocation);
+      q.resolve(this.state.viewLocation);
     }
+    return q.promise;
   },
-  setUserLocation: function(userLocation) {
-    console.log('setUserLocation', userLocation);
-    var { latitude, longitude, zoom } = userLocation;
-    this.setState({userLocation, currentLocation: userLocation}, this.getRecommendations);
+  setViewLocation: function(location) {
+    console.log('setViewLocation', location);
+    var q = Q.defer();
+    var { latitude, longitude, zoom } = location;
     this.setCenterCoordinateZoomLevelAnimated(mapRef, latitude, longitude, zoom);
-  },
-  getRecommendations: function(next) {
-    RecommendationService.getRecommendations(this.state.userLocation, (meters) => {
-      console.log('getRecommendations', meters);
-      this.showMeters(meters);
-      this.props.handleLoading(false);
+    this.setState({viewLocation: location, isMoving: false}, () => {
+      console.log('setViewLocation resolving');
+      q.resolve(location)
     });
+    return q.promise;
+  },
+  // setSearchLocation: function(location){
+  //   console.log('setSearchLocation', location);
+  //   var q = Q.defer();
+  //   this.setState({searchLocation: location}, () => {
+  //     q.resolve(location);
+  //   });
+
+  //   return q.promise;
+  // },
+  getRecommendations: function(location) {
+    var q = Q.defer();
+    RecommendationService.getRecommendations(location, (meters) => {
+      console.log('getRecommendations', meters);
+      q.resolve(meters);
+    });
+    return q.promise;
   },
   showMeters: function(meters){
+    console.log('showMeters', meters);
+    var q = Q.defer();
     meters.forEach((meter) => {
       meter.annotationImage = {
         url: METER_ICON,
@@ -95,17 +125,23 @@ var MapDisplaySection = React.createClass({
       };
     });
     this.addAnnotations(mapRef, meters);
+    q.resolve();
+    this.props.handleLoading(false);
+    return q.promise;
   },
   handleMessage: function(message) {
     switch(message){
-      case 'showNextMeters':
-        console.log('got next message');
-        break;
-      case 'setUserLocation':
-        this.getMapUserLocation();
+      case 'doSearch':
+        this.getMapUserLocation()
+        // .then(this.setViewLocation)
+        .then(this.getRecommendations)
+        .then(this.showMeters)
+        .catch((err) => console.log('error', err));
         break;
       case 'resetUserLocation':
-        this.getGPSUserLocation(this.setUserLocation);
+        this.getGPSUserLocation()
+        .then(this.setViewLocation)
+        .then(this.onRegionChange)
         break;
     }
   },
@@ -116,11 +152,15 @@ var MapDisplaySection = React.createClass({
       </View>
     );
   },
-
+  _setState: function(obj){
+    var q = Q.defer();
+    this.setState(obj, () => {
+      console.log('setting', obj);
+      q.resolve(obj);
+    });
+    return q.promise;
+  },
   render: function() {
-    // if (!this.state.loaded) {
-    //   return this.renderLoadingView();
-    // };
     return (
       <View style={styles.container}>
         <MapboxGLMap

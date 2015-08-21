@@ -7,6 +7,7 @@
 var _fb = require('firebase');
 var _url = require('../firebaselink').url;
 var _ref = new _fb(_url);
+var moment = require('moment');
 
 var getRecommendations = (user, callback) => {
   if(!user.range) user.range = 0.2;
@@ -27,7 +28,12 @@ var getRecommendations = (user, callback) => {
         Object.keys(recommendations).length
       );
       userRef.remove();
-      callback(sortDistance(recommendations));
+      recommendations = sortDistance(recommendations);
+      recommendations.forEach((meter) => {
+        meter.title = moment(meter.timeStamp,'YYYYMMDDTHHmmssSSZ').fromNow()
+      }
+      );
+      callback(recommendations);
     })
     userRef.off('child_added');
   })

@@ -50,6 +50,7 @@ app.post('/api/init', function(req, res) {
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 //Listen for a new user session and adds a user entry on firebase in the Users database
 var firecloud = new Firebase(fb_keys.url);
+firecloud.child('Users').remove();
 var usersRef = firecloud.child('Users'); //creates a new sub database, 'Users' for user specific location and parking recommendations
 
 usersRef.on('child_added', function(childSnapshot, prevChildKey) {
