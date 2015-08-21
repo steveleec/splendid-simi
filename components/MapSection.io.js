@@ -63,16 +63,19 @@ var MapDisplaySection = React.createClass({
     .then(this.getRecommendations)
     .then(this.showMeters);
   },
-  getGPSUserLocation: function(callback) {
-    var q = Q.defer();
+  getGPSUserLocation: function(callback, q) {
+    q = q || Q.defer();
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => {
         var {latitude, longitude} = initialPosition.coords;
         var user = {latitude,longitude,zoom: 17,range: 0.2};
         q.resolve(user);
       },
-      (error) => console.error(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 60000}
+      (error) => {
+        console.log('navigation error', error.message)
+        this.getGPSUserLocation(callback, q);
+      },
+      {enableHighAccuracy: true, timeout: 1000, maximumAge: 60000}
     );
     return q.promise;
   },
