@@ -49,24 +49,19 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   buttons: {
-    flex: 1,
-    flexDirection: 'row',
-    position: 'absolute',
-    right: 0, bottom: 0, left: 0,
-    padding: 16,
-    backgroundColor: 'rgba(0,0,0,0)',
+    flex: 1, flexDirection: 'row', position: 'absolute', right: 0, bottom: 0, left: 0, padding: 16, backgroundColor: 'rgba(0,0,0,0)',
   },
-  button: {
-    flex: 1,
-    alignItems: 'center',
-    margin: 8,
-    padding: 16,
-    borderRadius: 4,
-    backgroundColor: colors.midnight,
+  setLocationBtn: {
+    flex: 1, alignItems: 'center', margin: 8, padding: 16, borderRadius: 4, backgroundColor: colors.midnight,
   },
-  buttonText: {
-    fontFamily: 'Montserrat-Bold',
-    color: colors.clouds,
+  setLocationBtnText: {
+    fontFamily: 'Montserrat-Bold', color: colors.clouds,
+  },
+  resetLocationBtn: {
+    flex: 0, margin: 8, padding: 16, borderRadius: 4, backgroundColor: colors.midnight,
+  },
+  resetLocationBtnText: {
+    fontFamily: 'Montserrat-Bold', color: colors.clouds,
   },
 });
 var ParkingAssist = React.createClass({
@@ -86,9 +81,16 @@ var ParkingAssist = React.createClass({
         </View>
         <View style={styles.buttons}>
           <TouchableHighlight
-            style={styles.button}
-            onPress={this._handleSetLocationBtnClick}>
-              <Text style={styles.buttonText}>Redo Search In This Area</Text>
+            style={styles.setLocationBtn}
+            onPress={this._handleSetLocationBtnClick}
+          >
+              <Text style={styles.setLocationBtnText}>Redo Search In This Area</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.resetLocationBtn}
+            onPress={this._handleResetLocationBtnClick}
+          >
+            <Text style={styles.resetLocationBtnText}>¤</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -100,6 +102,10 @@ var ParkingAssist = React.createClass({
   _handleSetLocationBtnClick: function() {
     console.log('_handleSetLocationBtnClick');
     this.state.messageReceiver('setUserLocation');
+  },
+  _handleResetLocationBtnClick: function() {
+    console.log('_handleResetLocationBtnClick');
+    this.state.messageReceiver('resetUserLocation');
   },
 });
 
