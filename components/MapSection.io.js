@@ -83,6 +83,7 @@ var MapDisplaySection = React.createClass({
     RecommendationService.getRecommendations(this.state.userLocation, (meters) => {
       console.log('getRecommendations', meters);
       this.showMeters(meters);
+      this.props.handleLoading(false);
     });
   },
   showMeters: function(meters){
