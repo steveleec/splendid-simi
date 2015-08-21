@@ -79,11 +79,11 @@ var MapDisplaySection = React.createClass({
   getMapUserLocation: function(){
     var q = Q.defer();
     console.log('getMapUserLocation', this.state.isMoving, this.state.viewLocation);
-    if(this.state.isMoving) q.reject('error: moving');
-    else {
+    // if(this.state.isMoving) q.reject('error: moving');
+    // else {
       console.log('view', this.state.viewLocation);
       q.resolve(this.state.viewLocation);
-    }
+    // }
     return q.promise;
   },
   setViewLocation: function(location) {
@@ -120,7 +120,7 @@ var MapDisplaySection = React.createClass({
     meters.forEach((meter) => {
       meter.annotationImage = {
         url: METER_ICON,
-        height: 14,
+        height: 25,
         width: 25
       };
     });
