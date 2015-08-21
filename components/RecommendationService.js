@@ -9,10 +9,22 @@ var _url = require('../firebaselink').url;
 var _ref = new _fb(_url);
 var moment = require('moment');
 
+var sortDistance = (objs) => {
+  var arr = [];
+  var obj;
+  for (obj in objs) {
+    if (!!objs[obj]) {
+      arr.push(objs[obj]);
+    }
+  }
+  return arr.sort((a, b) => a.distance - b.distance);
+};
+
 var getRecommendations = (user, callback) => {
-  if(!user.range) user.range = 0.2;
+  var userRef;
+  if (!user.range) user.range = 0.2;
   console.log('getRecommendations', user);
-  var userRef = _ref.child('Users').push(user);
+  userRef = _ref.child('Users').push(user);
 
   userRef
   .child('Recommendations')
@@ -30,22 +42,14 @@ var getRecommendations = (user, callback) => {
       userRef.remove();
       recommendations = sortDistance(recommendations);
       recommendations.forEach((meter) => {
-        meter.title = moment(meter.timeStamp,'YYYYMMDDTHHmmssSSZ').fromNow()
+        meter.title = moment(meter.timeStamp, 'YYYYMMDDTHHmmssSSZ').fromNow();
       }
       );
       callback(recommendations);
-    })
+    });
     userRef.off('child_added');
-  })
+  });
 };
-
-var sortDistance = (objs) => {
-  var arr = [];
-  for (var obj in objs) {
-    arr.push(objs[obj]);
-  }
-  return arr.sort((a,b) => a.distance-b.distance)
-}
 
 var RecommendationService = {
   getRecommendations,
