@@ -49,8 +49,12 @@ var styles = StyleSheet.create({
     flex: 1,
   },
   buttons: {
+    flex: 1,
     flexDirection: 'row',
+    position: 'absolute',
+    right: 0, bottom: 0, left: 0,
     padding: 16,
+    backgroundColor: 'rgba(0,0,0,0)',
   },
   button: {
     flex: 1,
@@ -74,7 +78,7 @@ var ParkingAssist = React.createClass({
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>
-            PARKING ASSIST
+            PRK
           </Text>
         </View>
         <View style={styles.map}>
@@ -90,7 +94,7 @@ var ParkingAssist = React.createClass({
       </View>
     );
   },
-  setMessageReceiver: function(messageReceiver){
+  setMessageReceiver: function(messageReceiver) {
     this.setState({messageReceiver});
   },
   _handleSetLocationBtnClick: function() {
