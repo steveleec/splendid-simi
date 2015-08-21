@@ -13,7 +13,7 @@ var {
   View,
 } = React;
 
-var METER_ICON = 'http://i.imgur.com/TTilbOY.png';
+var METER_ICON = 'http://i.imgur.com/MpFpHXa.png';
 
 var _distance = function(latU, longU, latP, longP) {
   return Math.sqrt(Math.pow((latP - latU) * 69.1128, 2) + Math.pow((longP - longU) * 57.2807, 2));
