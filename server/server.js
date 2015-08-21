@@ -54,9 +54,11 @@ firecloud.child('Users').remove();
 var usersRef = firecloud.child('Users'); //creates a new sub database, 'Users' for user specific location and parking recommendations
 
 usersRef.on('child_added', function(childSnapshot, prevChildKey) {
-  // console.log('******************* NEW USER ********************')
+  // console.log('******************* NEW USER ********************');
+  var start = Date.now();
   var user = childSnapshot.val();
   var userKey = childSnapshot.key();
+  console.log('+', userKey);
   // console.log('User\'s details:',user, typeof user, 'currChildKey:', childSnapshot.key());
   // console.log('*************************************************');
 
@@ -82,6 +84,7 @@ usersRef.on('child_added', function(childSnapshot, prevChildKey) {
       } // end if condition to check if the parking spot is within range
     } // end of for loop for pSpots
     firecloud.child('Users').child(userKey).child('Recommendations').set(freeSpots); //adds the list of recomendations to the User in the database
+    console.log('-', userKey, Date.now() - start, 'ms');
   });
 });
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
