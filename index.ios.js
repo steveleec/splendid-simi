@@ -12,6 +12,7 @@ var {
   View,
   StatusBarIOS,
   TouchableHighlight,
+  ActivityIndicatorIOS,
 } = React;
 
 
@@ -63,8 +64,16 @@ var styles = StyleSheet.create({
   resetLocationBtnText: {
     fontFamily: 'Montserrat-Bold', color: colors.clouds,
   },
+  spinner: {
+    width: 50, height: 50, backgroundColor: "red"
+  },
 });
 var ParkingAssist = React.createClass({
+  getInitialState: function() {
+    return {
+      isLoading: false,
+    };
+  },
   componentDidMount: function() {
     StatusBarIOS.setStyle(1);
   },
@@ -77,8 +86,13 @@ var ParkingAssist = React.createClass({
           </Text>
         </View>
         <View style={styles.map}>
-          <MapDisplaySection setMessageReceiver={this.setMessageReceiver} ref={mapRef} />
+          <MapDisplaySection setMessageReceiver={this.setMessageReceiver} handleLoading={this.handleLoading} ref={mapRef} />
         </View>
+        <ActivityIndicatorIOS style={styles.spinner}
+          animating={this.state.isLoading}
+          color="#111"
+          size="large"
+        />
         <View style={styles.buttons}>
           <TouchableHighlight
             style={styles.setLocationBtn}
@@ -100,12 +114,16 @@ var ParkingAssist = React.createClass({
     this.setState({messageReceiver});
   },
   _handleSetLocationBtnClick: function() {
+    this.setState({isLoading: true});
     console.log('_handleSetLocationBtnClick');
     this.state.messageReceiver('setUserLocation');
   },
   _handleResetLocationBtnClick: function() {
     console.log('_handleResetLocationBtnClick');
     this.state.messageReceiver('resetUserLocation');
+  },
+  handleLoading: function(bool) {
+    this.setState({isLoading: bool});
   },
 });
 
