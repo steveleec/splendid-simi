@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var MapDisplaySection = require('./components/MapSection.io.js');
+var Spinner = require('./components/Spinner.js');
 
 var mapRef = 'mapRef';
 
@@ -12,7 +13,6 @@ var {
   View,
   StatusBarIOS,
   TouchableHighlight,
-  ActivityIndicatorIOS,
   Image,
 } = React;
 
@@ -65,12 +65,6 @@ var styles = StyleSheet.create({
   resetLocationBtnImage: {
     width: 24, height: 24,
   },
-  spinnerContainer: {
-    flex: 1, alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: 'rgba(0,0,0,0)',
-  },
-  spinner: {
-    flex: 1, width: 50, height: 50,
-  },
 });
 var ParkingAssist = React.createClass({
   getInitialState: function() {
@@ -109,7 +103,7 @@ var ParkingAssist = React.createClass({
             />
           </TouchableHighlight>
         </View>
-        { this.state.isLoading ? <Spinner /> : null }
+        { this.state.isLoading ? <Spinner/> : null }
       </View>
     );
   },
@@ -128,20 +122,6 @@ var ParkingAssist = React.createClass({
   },
   handleLoading: function(bool) {
     this.setState({isLoading: bool});
-  },
-});
-
-var Spinner = React.createClass({
-  render: function() {
-    return (
-      <View style={styles.spinnerContainer}>
-        <ActivityIndicatorIOS style={styles.spinner}
-          animating={true}
-          color="#111"
-          size="large"
-        />
-      </View>
-    );
   },
 });
 
