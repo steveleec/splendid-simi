@@ -13,6 +13,7 @@ var {
   StatusBarIOS,
   TouchableHighlight,
   ActivityIndicatorIOS,
+  Image,
 } = React;
 
 
@@ -53,19 +54,22 @@ var styles = StyleSheet.create({
     flex: 1, flexDirection: 'row', position: 'absolute', right: 0, bottom: 0, left: 0, padding: 16, backgroundColor: 'rgba(0,0,0,0)',
   },
   setLocationBtn: {
-    flex: 1, alignItems: 'center', margin: 8, padding: 16, borderRadius: 4, backgroundColor: colors.midnight,
+    flex: 1, alignItems: 'center', justifyContent: 'center', height: 44, margin: 8, borderRadius: 4, backgroundColor: colors.midnight,
   },
   setLocationBtnText: {
     fontFamily: 'Montserrat-Bold', color: colors.clouds,
   },
   resetLocationBtn: {
-    flex: 0, margin: 8, padding: 16, borderRadius: 4, backgroundColor: colors.midnight,
+    flex: 0, alignItems: 'center', justifyContent: 'center', width: 44, height: 44, margin: 8, borderRadius: 4, backgroundColor: colors.midnight,
   },
-  resetLocationBtnText: {
-    fontFamily: 'Montserrat-Bold', color: colors.clouds,
+  resetLocationBtnImage: {
+    width: 24, height: 24,
+  },
+  spinnerContainer: {
+    flex: 1, alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: 'rgba(0,0,0,0)',
   },
   spinner: {
-    width: 50, height: 50, backgroundColor: "red"
+    flex: 1, width: 50, height: 50,
   },
 });
 var ParkingAssist = React.createClass({
@@ -88,11 +92,6 @@ var ParkingAssist = React.createClass({
         <View style={styles.map}>
           <MapDisplaySection setMessageReceiver={this.setMessageReceiver} handleLoading={this.handleLoading} ref={mapRef} />
         </View>
-        <ActivityIndicatorIOS style={styles.spinner}
-          animating={this.state.isLoading}
-          color="#111"
-          size="large"
-        />
         <View style={styles.buttons}>
           <TouchableHighlight
             style={styles.setLocationBtn}
@@ -104,9 +103,13 @@ var ParkingAssist = React.createClass({
             style={styles.resetLocationBtn}
             onPress={this._handleResetLocationBtnClick}
           >
-            <Text style={styles.resetLocationBtnText}>¤</Text>
+            <Image
+              style={styles.resetLocationBtnImage}
+              source={{ uri: 'http://i.imgur.com/wNXcUtd.png' }}
+            />
           </TouchableHighlight>
         </View>
+        { this.state.isLoading ? <Spinner /> : null }
       </View>
     );
   },
@@ -124,6 +127,20 @@ var ParkingAssist = React.createClass({
   },
   handleLoading: function(bool) {
     this.setState({isLoading: bool});
+  },
+});
+
+var Spinner = React.createClass({
+  render: function() {
+    return (
+      <View style={styles.spinnerContainer}>
+        <ActivityIndicatorIOS style={styles.spinner}
+          animating={true}
+          color="#111"
+          size="large"
+        />
+      </View>
+    );
   },
 });
 
